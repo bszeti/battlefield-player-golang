@@ -1,3 +1,4 @@
-export BATTLEFIELD_MAX_HEALTH=10
+export BATTLEFIELD_MAX_HEALTH=3
+export TERMINATION_LOG_PATH=./termlog
 go build && \
 ./battlefield-player-golang 

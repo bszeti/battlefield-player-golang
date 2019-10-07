@@ -5,14 +5,15 @@ import (
 
 	//"encoding/json"
 	// "fmt"
-	// "os"
+	"os"
+	"time"
 	// "path/filepath"
 	// "strings"
 	// "errors"
 
 	// "k8s.io/client-go/tools/clientcmd"
 	//clientcmdapi "k8s.io/client-go/tools/clientcmd/api"
-	// "io/ioutil"
+	"io/ioutil"
 	"log"
 	"sync/atomic"
 	// "net/http"
@@ -27,6 +28,7 @@ import (
 
 var currentHealth int32
 // var lastHitBy string
+var termlogPath = getEnv("TERMINATION_LOG_PATH","/dev/termination-log")
 
 //HitByPlayer decreses health and returns current value
 func HitByPlayer( player string,) (int32, error){
@@ -35,6 +37,7 @@ func HitByPlayer( player string,) (int32, error){
 	health := atomic.AddInt32(&currentHealth,-1)
 	if (health == 0){
 		log.Printf("Killed by player: %s",player)
+		defer shutDown(player)
 	}
 	return health, nil
 }
@@ -55,6 +58,24 @@ func SetCurrentHealth(health int32){
 }
 
 
+
 func shutDown(killedBy string) {
-	log.Println("Shutting down")
+	data := []byte(killedBy)
+    err := ioutil.WriteFile(termlogPath, data, 0666)
+    if (err != nil) {
+		log.Println("Failed to write termination log.", termlogPath)
+	}
+	go func() {
+		log.Println("Shutting down.")
+		time.Sleep(time.Millisecond * 500)
+		os.Exit(0)
+	} ()
+	log.Println("Done.")
+}
+
+func getEnv(key, fallback string) string {
+    if value, ok := os.LookupEnv(key); ok {
+        return value
+    }
+    return fallback
 }
