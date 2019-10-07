@@ -1,4 +1,3 @@
-
 package main
 
 import (
@@ -45,9 +44,7 @@ func getCurrentHealth(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(currentHealth) 
 }
 
-//Config from ENV VARs
-var players []string 
-var myName string
+
 var hitPeriod int
 
 func main() {
@@ -67,8 +64,8 @@ func main() {
 	}
 
 	//Config - My name
-	myName = os.Getenv("BATTLEFIELD_PLAYER_NAME")
-	if len(myName)==0 {
+	services.MyName = os.Getenv("BATTLEFIELD_PLAYER_NAME")
+	if len(services.MyName)==0 {
 		log.Fatal("Wrong BATTLEFIELD_PLAYER_NAME")
 	}
 
@@ -76,13 +73,13 @@ func main() {
 	if os.Getenv("BATTLEFIELD_PLAYER_URLS")=="" {
 		log.Fatal("Wrong BATTLEFIELD_PLAYER_URLS")
 	}
-	players = strings.Split(os.Getenv("BATTLEFIELD_PLAYER_URLS"), ",")
+	services.Players = strings.Split(os.Getenv("BATTLEFIELD_PLAYER_URLS"), ",")
 
 	
 	rand.Seed(time.Now().Unix()) // init random generator
 	//Start scheduled service
 	tick := time.NewTicker( time.Duration(hitPeriod) * time.Millisecond )
-	go scheduler(tick)	
+	go services.Scheduler(tick)	
 
 
 	//Run http server 
@@ -96,20 +93,4 @@ func main() {
         log.Fatal("ListenAndServe Error: ", err)
 	}
 	
-}
-
-//Scheduled - hit an other player
-func scheduler(tick *time.Ticker){
-	//First time
-	hitRandomPlayer()
-	//When ticks
-	for range tick.C {
-		hitRandomPlayer()
-	}
-}
-
-//Hit another player
-func hitRandomPlayer(){
-	player := players[rand.Intn(len(players))]
-	log.Println("Hitting player",player)
 }

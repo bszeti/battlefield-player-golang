@@ -1,29 +1,11 @@
 package services
 
 import (
-	// "flag"
-
-	//"encoding/json"
-	// "fmt"
 	"os"
 	"time"
-	// "path/filepath"
-	// "strings"
-	// "errors"
-
-	// "k8s.io/client-go/tools/clientcmd"
-	//clientcmdapi "k8s.io/client-go/tools/clientcmd/api"
 	"io/ioutil"
 	"log"
 	"sync/atomic"
-	// "net/http"
-
-	
-	// "k8s.io/client-go/rest"
-	
-	
-
-	
 )
 
 var currentHealth int32
