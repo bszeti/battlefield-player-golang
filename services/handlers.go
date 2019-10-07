@@ -25,13 +25,13 @@ func HitByPlayer( player string,) (int32, error){
 }
 
 //CurrentHealth returns current health (0+)
-func CurrentHealth() (int32){
-	health := currentHealth
+func CurrentHealth() (int){
+	health := int(currentHealth)
 	if (health > 0) {
 		return health
-	} else {
-		return 0
 	}
+		
+	return 0
 }
 
 //SetCurrentHealth simply 

@@ -38,10 +38,10 @@ func hitByPlayer(w http.ResponseWriter, r *http.Request) {
 
 //GetCurrentHealth return current health
 func getCurrentHealth(w http.ResponseWriter, r *http.Request) {
-	log.Println("GetCurrentHealth")
 	currentHealth :=  services.CurrentHealth()
+	log.Println("GetCurrentHealth:", currentHealth)
 	
-	json.NewEncoder(w).Encode(currentHealth) 
+	fmt.Fprintf(w, "%d",currentHealth)
 }
 
 

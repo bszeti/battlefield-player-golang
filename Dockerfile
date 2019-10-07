@@ -1,5 +1,5 @@
 FROM registry.access.redhat.com/ubi7/ubi
 
-ADD ./battlefield-golang-player /
+ADD ./battlefield-player-golang /
 
-ENTRYPOINT ["/battlefield-golang-player"]
+ENTRYPOINT ["/battlefield-player-golang"]
