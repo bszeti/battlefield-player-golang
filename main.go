@@ -17,12 +17,12 @@ import (
 	"github.com/bszeti/battlefield-player-golang/services"
 )
 
-
+//Simply health endpoint
 func healthHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "{\"status\": \"OK\"}")
 }
 
-//HitByPlayer gets a Battlefield resource by name  
+//HitByPlayer takes a hit from another player
 func hitByPlayer(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	hitByPlayer := vars["player"]
@@ -37,7 +37,7 @@ func hitByPlayer(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//GetCurrentHealth is
+//GetCurrentHealth return current health
 func getCurrentHealth(w http.ResponseWriter, r *http.Request) {
 	log.Println("GetCurrentHealth")
 	currentHealth :=  services.CurrentHealth()
@@ -45,6 +45,7 @@ func getCurrentHealth(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(currentHealth) 
 }
 
+//Config from ENV VARs
 var players []string 
 var myName string
 var hitPeriod int
@@ -97,6 +98,7 @@ func main() {
 	
 }
 
+//Scheduled - hit an other player
 func scheduler(tick *time.Ticker){
 	//First time
 	hitRandomPlayer()
