@@ -39,6 +39,7 @@ func hitRandomPlayer(){
         log.Println("The HTTP request failed with error", err)
     } else {
         data, _ := ioutil.ReadAll(response.Body)
-        log.Println("Response health:",string(data))
+		log.Println("Response health:",string(data))
+		defer response.Body.Close()
 	}
 }
